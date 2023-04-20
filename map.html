@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+   <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/leaflet.css" integrity="sha512-mD70nAW2ThLsWH0zif8JPbfraZ8hbCtjQ+5RU1m4+ztZq6/MymyZeB55pWsi4YAX+73yvcaJyk61mzfYMvtm9w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link rel = "stylesheet" href = "style/style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/leaflet.js" integrity="sha512-Dqm3h1Y4qiHUjbhxTuBGQsza0Tfppn53SHlu/uj1f+RT+xfShfe7r6czRf5r2NmllO2aKx+tYJgoxboOkn1Scg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   </head>
+   
+   <body>
+    <div class="row">
+        <div class="col-md-3 col-sm-12">
+            <a href="index.html">
+                <div>
+                    Home Page
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3 col-sm-12" >
+            <button id="sos-button">
+                SOS
+            </button>
+        </div>
+        <div class="col-md-3 col-sm-12">
+            <a href="map.html">
+                <div>
+                    Map
+                </div>
+            </a>
+        </div>
+      </div>
+    <div id = "map" style = "width:900px; height:580px;"></div>
+    <script>
+        var map = L.map('map');
+        map.setView([51.505, -0.09], 12);
+
+        var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        map.addLayer(layer);
+        
+        navigator.geolocation.watchPosition(success, error);
+
+        let marker, circle, zoomed;
+
+        function success(pos) {
+            const lat = pos.coords.latitude;
+            const long = pos.coords.longitude;
+            const accuracy = pos.coords.accuracy;
+
+            if (marker) {
+                map.removeLayer(marker);
+                map.removeLayer(circle);
+            }
+
+            marker = L.marker([lat, long]).addTo(map);
+            circle = L.circle([lat, long], { radius: accuracy }).addTo(map);
+
+            if (!zoomed) {
+                zoomed = map.fitBounds(circle.getBounds());
+            };
+            
+            map.setView([lat, long]);
+        };
+
+        function error(err) {
+            if (err.code === 1) {
+                alert("Please allow geolocation access");
+            } else {
+                alert("Cannot get current location");
+            }
+        };
+     </script>
+   </body>
+</html>
