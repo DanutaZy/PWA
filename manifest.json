@@ -1,7 +1,7 @@
 {
     "name": "GeoLocation",
     "short_name": "GeoLocation",
-    "start_url": "/?home=true",
+    "start_url": "https://danutazy.github.io/PWA/index.html",
     "icons": [
         {
             "src": "icons/manifest-icon-192.maskable.png",
